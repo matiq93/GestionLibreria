@@ -43,9 +43,15 @@ Contributor(s):
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/libreria2?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/gestionlibreria?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">adeeme</property>
-    <mapping resource="Modelo/Libreria.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/Libreria.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/Genero.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/CuentaProveedor.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/GrupoEditorial.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/SelloEditorial.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/Escritor.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/Libro.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

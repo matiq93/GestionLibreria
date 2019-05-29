@@ -13,7 +13,8 @@ import java.util.ArrayList;
  */
 public interface dbDAO {
     public ArrayList listarTodos();
-    public boolean agregar();
+    public boolean agregar(Object nuevo);
     public Object leer(String nombre);
-    public ArrayList listarFiltradoXNombre();
+    public Object cargarPorId(int id);
+    public ArrayList listarFiltradoXNombre(String filtro);
 }

@@ -40,16 +40,22 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-    
-    <class name="Modelo.Libreria" table="libreria">
-        <id name="id" column="idlibreria">
+    <class name="Modelo.Genero" table="genero">
+        <id name="id" column="idgenero">
             <generator class="increment"></generator>
         </id>
         <property name="nombre" column="nombre" type="java.lang.String"/>
-        <property name="clave" column="clave" type="java.lang.String"/>
     </class>
-     
-    <query name="Listar Todos">
-        from Libreria
-    </query> 
+  
+    <query name="listar generos">
+        select g from Genero g order by nombre
+    </query>
+    
+    <query name = "listar generos filtrado">
+        select g from Genero g where nombre like :nombre order by nombre
+    </query>
+    
+    <query name="genero x id">
+        select g from Genero g where id = :id
+    </query>
 </hibernate-mapping>

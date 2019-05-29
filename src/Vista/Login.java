@@ -45,15 +45,14 @@ public class Login extends javax.swing.JFrame {
         jLbl_fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(600, 450));
         setMinimumSize(new java.awt.Dimension(600, 450));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(600, 450));
         setResizable(false);
+        setSize(new java.awt.Dimension(600, 450));
 
         jPan_principal.setLayout(null);
 
-        jBut_salir.setBackground(new java.awt.Color(255, 0, 0));
+        jBut_salir.setBackground(new java.awt.Color(255, 102, 102));
         jBut_salir.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jBut_salir.setForeground(new java.awt.Color(0, 0, 0));
         jBut_salir.setText("Salir");
@@ -194,14 +193,14 @@ public class Login extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void actualizarUsuarios() {
-        ArrayList<Libreria> lista = new Controlador.LibreriaDAOImpl().listarTodos();
+        ArrayList<Libreria> lista = new Controlador.DAO.LibreriaDAOImpl().listarTodos();
         for (Libreria aux : lista) {
             jCB_usuarios.addItem(aux.toString());
         }
     }
 
     private void entrar() {
-        Libreria lib = (Libreria) new Controlador.LibreriaDAOImpl().leer(jCB_usuarios.getSelectedItem().toString());
+        Libreria lib = (Libreria) new Controlador.DAO.LibreriaDAOImpl().leer(jCB_usuarios.getSelectedItem().toString());
         if (lib != null) {
             if (jPass_pass.getText().equals(lib.getClave())) {
                 Controlador.GestionLibreria.idUsuario = lib.getId();

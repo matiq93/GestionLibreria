@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlador;
+package Controlador.DAO;
 
 import Modelo.Conexion;
 import Modelo.dbDAO;
@@ -33,7 +33,7 @@ public class LibreriaDAOImpl implements dbDAO{
     }
 
     @Override
-    public boolean agregar() {
+    public boolean agregar(Object nuevo) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -59,7 +59,12 @@ public class LibreriaDAOImpl implements dbDAO{
     }
 
     @Override
-    public ArrayList listarFiltradoXNombre() {
+    public ArrayList listarFiltradoXNombre(String filtro) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object cargarPorId(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

@@ -17,6 +17,10 @@ public class GestionLibreria {
 
     
         public static int idUsuario=0;
+        public static int busqueda=0;
+        public static Object resultadoBusqueda=null;
+        
+        
     public static void main(String[] args) {
         
         

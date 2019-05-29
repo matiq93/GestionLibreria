@@ -1,0 +1,98 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controlador.DAO;
+
+import Modelo.Conexion;
+import Modelo.Escritor;
+import Modelo.dbDAO;
+import java.util.ArrayList;
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+/**
+ *
+ * @author Matias
+ */
+public class EscritorDAOImpl implements dbDAO{
+
+    @Override
+    public ArrayList listarTodos() {
+        ArrayList <Escritor> lista = new ArrayList();
+        Session s = Conexion.getSession();
+        try {
+            Query q = s.getNamedQuery("listar escritores");
+            lista = (ArrayList<Escritor>) q.list();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }finally{
+            s.close();
+            return lista;
+        }
+    }
+
+    @Override
+    public boolean agregar(Object nuevo) {
+        Session s = Conexion.getSession();
+        boolean flag= false;
+        try {
+            Escritor nuevoEscritor = (Escritor)nuevo;
+            s.beginTransaction();
+            s.save(nuevoEscritor);
+            s.getTransaction().commit();
+            flag=true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }finally{
+            s.close();
+            return flag;
+        }
+        
+    }
+
+    @Override
+    public Object leer(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object cargarPorId(int id) {
+        Escritor escritor = null;
+        Session s = Conexion.getSession();
+        try {
+            Query q = s.getNamedQuery("escritor x id");
+            q.setParameter("id", id);
+            escritor = (Escritor) q.uniqueResult();            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }finally{
+            s.close();
+            return escritor;
+        }
+    }
+
+    @Override
+    public ArrayList listarFiltradoXNombre(String filtro) {
+        ArrayList <Escritor> lista = new ArrayList();
+        Session s = Conexion.getSession();
+        String busqueda = "%"+filtro+"%";
+        try {
+            Query q = s.getNamedQuery("listar escritores filtrado");
+            q.setParameter( "apellido" , busqueda);
+            lista = (ArrayList<Escritor>) q.list();            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }finally{
+            s.close();
+            return lista;
+        }
+    }
+    
+}

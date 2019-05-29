@@ -5,6 +5,20 @@
  */
 package Vista;
 
+import Controlador.DAO.EscritorDAOImpl;
+import Controlador.DAO.GeneroDAOImpl;
+import Controlador.DAO.GrupoEditorialDAOImpl;
+import Controlador.DAO.LibroDAOImpl;
+import Controlador.DAO.SelloEditorialDAOImpl;
+import Modelo.Escritor;
+import Modelo.Genero;
+import Modelo.GrupoEditorial;
+import Modelo.Libro;
+import Modelo.SelloEditorial;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Matias
@@ -18,6 +32,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         permisossucurales();
+        actualizar();
     }
 
     /**
@@ -30,11 +45,25 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPan_general = new javax.swing.JPanel();
+        jPan_ConsultaLibros = new javax.swing.JPanel();
+        jPan_Tabla = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTbl_tabla = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jPan_vacio = new javax.swing.JPanel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenu_altas = new javax.swing.JMenu();
         jMI_altaEscritores = new javax.swing.JMenuItem();
-        jMI_altaEditorial = new javax.swing.JMenuItem();
+        jMen_CargarEditorial = new javax.swing.JMenu();
+        jMI_AltaGrupo = new javax.swing.JMenuItem();
+        jMI_AltaSello = new javax.swing.JMenuItem();
         jMI_altaLibro = new javax.swing.JMenuItem();
         jSep_1 = new javax.swing.JPopupMenu.Separator();
         jMI_Librerias = new javax.swing.JMenuItem();
@@ -42,6 +71,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMI_modStock = new javax.swing.JMenuItem();
         jMI_modPrecio = new javax.swing.JMenuItem();
         jMenu_consultas = new javax.swing.JMenu();
+        jMI_ConsultaLibros = new javax.swing.JMenuItem();
         jMI_consutaStock = new javax.swing.JMenuItem();
         jMI_consultaVentas = new javax.swing.JMenuItem();
         jMenu_ventas = new javax.swing.JMenu();
@@ -55,10 +85,124 @@ public class VistaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(900, 750));
         setMinimumSize(new java.awt.Dimension(900, 750));
-        setPreferredSize(new java.awt.Dimension(900, 750));
         setResizable(false);
 
         jPan_general.setLayout(new java.awt.CardLayout());
+
+        jPan_ConsultaLibros.setMaximumSize(new java.awt.Dimension(900, 729));
+        jPan_ConsultaLibros.setMinimumSize(new java.awt.Dimension(900, 729));
+
+        jPan_Tabla.setMaximumSize(new java.awt.Dimension(850, 560));
+        jPan_Tabla.setMinimumSize(new java.awt.Dimension(850, 560));
+        jPan_Tabla.setPreferredSize(new java.awt.Dimension(850, 560));
+
+        jTbl_tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTbl_tabla.setMaximumSize(new java.awt.Dimension(850, 500));
+        jTbl_tabla.setMinimumSize(new java.awt.Dimension(850, 500));
+        jTbl_tabla.setPreferredSize(new java.awt.Dimension(850, 500));
+        jScrollPane1.setViewportView(jTbl_tabla);
+
+        jLabel1.setText("Filtrar");
+
+        jRadioButton1.setText("Por ISBN");
+
+        jRadioButton2.setText("Por Titulo");
+
+        jRadioButton3.setText("Por Autor");
+
+        javax.swing.GroupLayout jPan_TablaLayout = new javax.swing.GroupLayout(jPan_Tabla);
+        jPan_Tabla.setLayout(jPan_TablaLayout);
+        jPan_TablaLayout.setHorizontalGroup(
+            jPan_TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
+            .addGroup(jPan_TablaLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPan_TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPan_TablaLayout.createSequentialGroup()
+                        .addComponent(jRadioButton1)
+                        .addGap(50, 50, 50)
+                        .addComponent(jRadioButton2)
+                        .addGap(59, 59, 59)
+                        .addComponent(jRadioButton3))
+                    .addGroup(jPan_TablaLayout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPan_TablaLayout.setVerticalGroup(
+            jPan_TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPan_TablaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPan_TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPan_TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jRadioButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jLabel2.setText("jLabel2");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 106, Short.MAX_VALUE)
+        );
+
+        jButton1.setText("jButton1");
+
+        javax.swing.GroupLayout jPan_ConsultaLibrosLayout = new javax.swing.GroupLayout(jPan_ConsultaLibros);
+        jPan_ConsultaLibros.setLayout(jPan_ConsultaLibrosLayout);
+        jPan_ConsultaLibrosLayout.setHorizontalGroup(
+            jPan_ConsultaLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPan_ConsultaLibrosLayout.createSequentialGroup()
+                .addGroup(jPan_ConsultaLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPan_ConsultaLibrosLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPan_ConsultaLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPan_Tabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPan_ConsultaLibrosLayout.createSequentialGroup()
+                        .addGap(414, 414, 414)
+                        .addComponent(jButton1)))
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        jPan_ConsultaLibrosLayout.setVerticalGroup(
+            jPan_ConsultaLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPan_ConsultaLibrosLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPan_Tabla, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jButton1)
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+
+        jPan_general.add(jPan_ConsultaLibros, "card3");
 
         jPan_vacio.setMaximumSize(new java.awt.Dimension(900, 729));
         jPan_vacio.setMinimumSize(new java.awt.Dimension(900, 729));
@@ -86,15 +230,32 @@ public class VistaPrincipal extends javax.swing.JFrame {
         });
         jMenu_altas.add(jMI_altaEscritores);
 
-        jMI_altaEditorial.setText("Cargar Editorial");
-        jMI_altaEditorial.addActionListener(new java.awt.event.ActionListener() {
+        jMen_CargarEditorial.setText("Cargar Editorial");
+
+        jMI_AltaGrupo.setText("Cargar Grupo / Proveedor");
+        jMI_AltaGrupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMI_altaEditorialActionPerformed(evt);
+                jMI_AltaGrupoActionPerformed(evt);
             }
         });
-        jMenu_altas.add(jMI_altaEditorial);
+        jMen_CargarEditorial.add(jMI_AltaGrupo);
+
+        jMI_AltaSello.setText("Cargar Sello");
+        jMI_AltaSello.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMI_AltaSelloActionPerformed(evt);
+            }
+        });
+        jMen_CargarEditorial.add(jMI_AltaSello);
+
+        jMenu_altas.add(jMen_CargarEditorial);
 
         jMI_altaLibro.setText("Cargar Libro");
+        jMI_altaLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMI_altaLibroActionPerformed(evt);
+            }
+        });
         jMenu_altas.add(jMI_altaLibro);
         jMenu_altas.add(jSep_1);
 
@@ -111,6 +272,14 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenuBar.add(jMenu_altas);
 
         jMenu_consultas.setText("Consultas");
+
+        jMI_ConsultaLibros.setText("Base de Datos de Libros");
+        jMI_ConsultaLibros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMI_ConsultaLibrosActionPerformed(evt);
+            }
+        });
+        jMenu_consultas.add(jMI_ConsultaLibros);
 
         jMI_consutaStock.setText("Consultar Stock");
         jMenu_consultas.add(jMI_consutaStock);
@@ -168,12 +337,9 @@ public class VistaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMI_altaEscritoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_altaEscritoresActionPerformed
-        // TODO add your handling code here:
+        actualizar();
+        new NuevoEscritor(this, true).setVisible(true);
     }//GEN-LAST:event_jMI_altaEscritoresActionPerformed
-
-    private void jMI_altaEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_altaEditorialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMI_altaEditorialActionPerformed
 
     private void jMI_anularVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_anularVentaActionPerformed
         // TODO add your handling code here:
@@ -183,6 +349,28 @@ public class VistaPrincipal extends javax.swing.JFrame {
         new Login().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMI_cerrarSesionActionPerformed
+
+    private void jMI_AltaGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_AltaGrupoActionPerformed
+        actualizar();
+        new NuevoGrupoEditorial(this, true).setVisible(true);
+    }//GEN-LAST:event_jMI_AltaGrupoActionPerformed
+
+    private void jMI_AltaSelloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_AltaSelloActionPerformed
+        actualizar();
+        new NuevoSello().setVisible(true);
+    }//GEN-LAST:event_jMI_AltaSelloActionPerformed
+
+    private void jMI_altaLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_altaLibroActionPerformed
+        actualizar();
+        new NuevoLibro();
+    }//GEN-LAST:event_jMI_altaLibroActionPerformed
+
+    private void jMI_ConsultaLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_ConsultaLibrosActionPerformed
+        actualizar();
+        jPan_vacio.setVisible(false);
+        jPan_ConsultaLibros.setVisible(true);
+        listarLibros();
+    }//GEN-LAST:event_jMI_ConsultaLibrosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,9 +408,14 @@ public class VistaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenuItem jMI_AltaGrupo;
+    private javax.swing.JMenuItem jMI_AltaSello;
+    private javax.swing.JMenuItem jMI_ConsultaLibros;
     private javax.swing.JMenuItem jMI_Librerias;
     private javax.swing.JMenuItem jMI_altaCliente;
-    private javax.swing.JMenuItem jMI_altaEditorial;
     private javax.swing.JMenuItem jMI_altaEscritores;
     private javax.swing.JMenuItem jMI_altaLibro;
     private javax.swing.JMenuItem jMI_altaVenta;
@@ -232,16 +425,26 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMI_consutaStock;
     private javax.swing.JMenuItem jMI_modPrecio;
     private javax.swing.JMenuItem jMI_modStock;
+    private javax.swing.JMenu jMen_CargarEditorial;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenu_altas;
     private javax.swing.JMenu jMenu_consultas;
     private javax.swing.JMenu jMenu_masOpciones;
     private javax.swing.JMenu jMenu_ventas;
+    private javax.swing.JPanel jPan_ConsultaLibros;
+    private javax.swing.JPanel jPan_Tabla;
     private javax.swing.JPanel jPan_general;
     private javax.swing.JPanel jPan_vacio;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSep_1;
     private javax.swing.JPopupMenu.Separator jSep_2;
     private javax.swing.JPopupMenu.Separator jSep_3;
+    private javax.swing.JTable jTbl_tabla;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
     private void permisossucurales() {
@@ -249,5 +452,45 @@ public class VistaPrincipal extends javax.swing.JFrame {
             jMI_Librerias.setVisible(false);
             jSep_1.setVisible(false);
         }
+    }
+    
+    private void actualizar(){
+        jPan_vacio.setVisible(true);
+        jPan_ConsultaLibros.setVisible(false);
+    }
+    
+    private void listarLibros(){
+        DefaultTableModel tabla = new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{"ISBN", "Titulo","Autor","Genero","Sello Editorial","Precio"}) {
+                    boolean[] canEdit = new boolean[]{false, false,false,false,false,false};
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                };
+                
+                ArrayList<Libro> lista = new LibroDAOImpl().listarTodos();
+                for (Libro aux : lista) {
+                    Escritor autor= (Escritor) new EscritorDAOImpl().cargarPorId(aux.getAutor().getId());
+                    Genero genero = (Genero)  new GeneroDAOImpl().cargarPorId(aux.getGenero().getId());
+                    SelloEditorial sello = (SelloEditorial) new SelloEditorialDAOImpl().cargarPorId(aux.getEditorial().getId());
+                    GrupoEditorial grupo = (GrupoEditorial) new GrupoEditorialDAOImpl().cargarPorId(sello.getGrupo().getId());
+                    tabla.addRow(new String []{ aux.getISBN(),
+                                                aux.getTitulo(),
+                                                autor.getNombres()+" "+autor.getApellidos(),
+                                                genero.getNombre(),
+                                                sello.getNombre(),
+                                                //grupo.getNombre(),
+                                                "$ "+String.format("%.2f", aux.getPrecio())});
+                }
+                jTbl_tabla.setPreferredSize(new Dimension(500, lista.size()*16));
+                jTbl_tabla.setModel(tabla);
+                
+                int [] anchos = new int[] {95,215,200,100,150,65};
+                for (int i = 0; i < anchos.length; i++) {                    
+                    jTbl_tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+                } 
     }
 }
