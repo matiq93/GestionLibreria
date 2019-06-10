@@ -85,6 +85,11 @@ public class Libro {
     public void setEditorial(SelloEditorial editorial) {
         this.editorial = editorial;
     }
+
+    @Override
+    public String toString() {
+        return "ISBN: " + ISBN + "  -  " + titulo + "  -  Precio: $"+String.format("%.2f", precio) ;
+    }
     
     
 }

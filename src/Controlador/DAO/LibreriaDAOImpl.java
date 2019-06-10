@@ -65,7 +65,19 @@ public class LibreriaDAOImpl implements dbDAO{
 
     @Override
     public Object cargarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Libreria libreria = null;
+        Session s = Conexion.getSession();
+        try {
+            Query q =s.getNamedQuery("buscar por id");
+            q.setParameter("id", id);
+            libreria = (Libreria) q.uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally{
+            s.close();
+            return libreria;
+        }
+         
     }
     
 }

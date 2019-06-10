@@ -9,14 +9,21 @@ import Controlador.DAO.EscritorDAOImpl;
 import Controlador.DAO.GeneroDAOImpl;
 import Controlador.DAO.GrupoEditorialDAOImpl;
 import Controlador.DAO.LibroDAOImpl;
+import Controlador.DAO.RemitoDAOImpl;
 import Controlador.DAO.SelloEditorialDAOImpl;
+import Modelo.DetalleRemito;
 import Modelo.Escritor;
 import Modelo.Genero;
 import Modelo.GrupoEditorial;
 import Modelo.Libro;
+import Modelo.Remito;
 import Modelo.SelloEditorial;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -49,15 +56,31 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jPan_Tabla = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTbl_tabla = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jLabel2 = new javax.swing.JLabel();
+        jlbl_filtrar = new javax.swing.JLabel();
+        jtxt_filtrar = new javax.swing.JTextField();
+        jBtn_filtrarISBN = new javax.swing.JRadioButton();
+        jbtn_filtrarTitulo = new javax.swing.JRadioButton();
+        jlbltitulo = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jlbl_seleccionado = new javax.swing.JLabel();
+        jBtn_modificarPrecioLibro = new javax.swing.JButton();
         jPan_vacio = new javax.swing.JPanel();
+        jPan_CargarRemito = new javax.swing.JPanel();
+        jlbl_titulo_CargarRemito = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable_busqueda_CargarRemito = new javax.swing.JTable();
+        jlbl_filtrar_CargarRemito = new javax.swing.JLabel();
+        jlbl_cantidad_CargarRemito = new javax.swing.JLabel();
+        jBtn_agregarAlRemito = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable_NuevoRemito = new javax.swing.JTable();
+        jBtn_terminar_cargarRemito = new javax.swing.JButton();
+        jlbl_libroSeleccionado_CargarRemito = new javax.swing.JLabel();
+        jBtn_cancelar_CargarRemito = new javax.swing.JButton();
+        jtxt_filtrar_CargarRemito = new javax.swing.JFormattedTextField();
+        jtxt_cantidad_CargarRemito = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jBtn_nuevoLibro = new javax.swing.JButton();
         jMenuBar = new javax.swing.JMenuBar();
         jMenu_altas = new javax.swing.JMenu();
         jMI_altaEscritores = new javax.swing.JMenuItem();
@@ -74,6 +97,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMI_ConsultaLibros = new javax.swing.JMenuItem();
         jMI_consutaStock = new javax.swing.JMenuItem();
         jMI_consultaVentas = new javax.swing.JMenuItem();
+        jMenu_proveedores = new javax.swing.JMenu();
+        jMI_CargarRemito = new javax.swing.JMenuItem();
         jMenu_ventas = new javax.swing.JMenu();
         jMI_altaCliente = new javax.swing.JMenuItem();
         jMI_altaVenta = new javax.swing.JMenuItem();
@@ -110,15 +135,37 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jTbl_tabla.setMaximumSize(new java.awt.Dimension(850, 500));
         jTbl_tabla.setMinimumSize(new java.awt.Dimension(850, 500));
         jTbl_tabla.setPreferredSize(new java.awt.Dimension(850, 500));
+        jTbl_tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTbl_tablaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTbl_tabla);
 
-        jLabel1.setText("Filtrar");
+        jlbl_filtrar.setText("Filtrar");
 
-        jRadioButton1.setText("Por ISBN");
+        jtxt_filtrar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtxt_filtrarKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_filtrarKeyTyped(evt);
+            }
+        });
 
-        jRadioButton2.setText("Por Titulo");
+        jBtn_filtrarISBN.setText("Por ISBN");
+        jBtn_filtrarISBN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_filtrarISBNActionPerformed(evt);
+            }
+        });
 
-        jRadioButton3.setText("Por Autor");
+        jbtn_filtrarTitulo.setText("Por Titulo");
+        jbtn_filtrarTitulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtn_filtrarTituloActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPan_TablaLayout = new javax.swing.GroupLayout(jPan_Tabla);
         jPan_Tabla.setLayout(jPan_TablaLayout);
@@ -129,15 +176,13 @@ public class VistaPrincipal extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPan_TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPan_TablaLayout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(jBtn_filtrarISBN)
                         .addGap(50, 50, 50)
-                        .addComponent(jRadioButton2)
-                        .addGap(59, 59, 59)
-                        .addComponent(jRadioButton3))
+                        .addComponent(jbtn_filtrarTitulo))
                     .addGroup(jPan_TablaLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlbl_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jtxt_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPan_TablaLayout.setVerticalGroup(
@@ -145,31 +190,45 @@ public class VistaPrincipal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPan_TablaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPan_TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1))
+                    .addComponent(jlbl_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxt_filtrar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPan_TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3))
+                    .addComponent(jBtn_filtrarISBN)
+                    .addComponent(jbtn_filtrarTitulo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(77, 77, 77))
         );
 
-        jLabel2.setText("jLabel2");
+        jlbltitulo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jlbltitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlbltitulo.setText("Lista de Titulos");
+
+        jlbl_seleccionado.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jlbl_seleccionado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlbl_seleccionado.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jlbl_seleccionado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 106, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(jlbl_seleccionado, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jButton1.setText("jButton1");
+        jBtn_modificarPrecioLibro.setText("Modificar Precio");
+        jBtn_modificarPrecioLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_modificarPrecioLibroActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPan_ConsultaLibrosLayout = new javax.swing.GroupLayout(jPan_ConsultaLibros);
         jPan_ConsultaLibros.setLayout(jPan_ConsultaLibrosLayout);
@@ -181,25 +240,25 @@ public class VistaPrincipal extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addGroup(jPan_ConsultaLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPan_Tabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jlbltitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPan_ConsultaLibrosLayout.createSequentialGroup()
-                        .addGap(414, 414, 414)
-                        .addComponent(jButton1)))
+                        .addGap(386, 386, 386)
+                        .addComponent(jBtn_modificarPrecioLibro)))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPan_ConsultaLibrosLayout.setVerticalGroup(
             jPan_ConsultaLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPan_ConsultaLibrosLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jlbltitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPan_Tabla, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jPan_Tabla, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jButton1)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jBtn_modificarPrecioLibro)
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         jPan_general.add(jPan_ConsultaLibros, "card3");
@@ -219,6 +278,195 @@ public class VistaPrincipal extends javax.swing.JFrame {
         );
 
         jPan_general.add(jPan_vacio, "card2");
+
+        jPan_CargarRemito.setMaximumSize(new java.awt.Dimension(900, 729));
+        jPan_CargarRemito.setMinimumSize(new java.awt.Dimension(900, 729));
+
+        jlbl_titulo_CargarRemito.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jlbl_titulo_CargarRemito.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlbl_titulo_CargarRemito.setText("Cargar Nuevo Remito");
+
+        jTable_busqueda_CargarRemito.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Title 1"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_busqueda_CargarRemito.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_busqueda_CargarRemitoMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTable_busqueda_CargarRemito);
+
+        jlbl_filtrar_CargarRemito.setText("Buscar por ISBN:");
+
+        jlbl_cantidad_CargarRemito.setText("Cantidad: ");
+
+        jBtn_agregarAlRemito.setText("Agregar al Remito");
+        jBtn_agregarAlRemito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_agregarAlRemitoActionPerformed(evt);
+            }
+        });
+
+        jTable_NuevoRemito.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ISBN", "Titulo", "Cantidad"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_NuevoRemito.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_NuevoRemitoMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(jTable_NuevoRemito);
+
+        jBtn_terminar_cargarRemito.setText("Terminar");
+        jBtn_terminar_cargarRemito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_terminar_cargarRemitoActionPerformed(evt);
+            }
+        });
+
+        jlbl_libroSeleccionado_CargarRemito.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jBtn_cancelar_CargarRemito.setText("Cancelar");
+        jBtn_cancelar_CargarRemito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_cancelar_CargarRemitoActionPerformed(evt);
+            }
+        });
+
+        jtxt_filtrar_CargarRemito.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        jtxt_filtrar_CargarRemito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtxt_filtrar_CargarRemitoKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_filtrar_CargarRemitoKeyTyped(evt);
+            }
+        });
+
+        jtxt_cantidad_CargarRemito.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+
+        jLabel1.setText("Seleccionado:");
+
+        jBtn_nuevoLibro.setText("Cargar Libro no existente");
+        jBtn_nuevoLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_nuevoLibroActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPan_CargarRemitoLayout = new javax.swing.GroupLayout(jPan_CargarRemito);
+        jPan_CargarRemito.setLayout(jPan_CargarRemitoLayout);
+        jPan_CargarRemitoLayout.setHorizontalGroup(
+            jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPan_CargarRemitoLayout.createSequentialGroup()
+                .addGap(303, 303, 303)
+                .addComponent(jBtn_cancelar_CargarRemito)
+                .addGap(141, 141, 141)
+                .addComponent(jBtn_terminar_cargarRemito)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPan_CargarRemitoLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPan_CargarRemitoLayout.createSequentialGroup()
+                        .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 566, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPan_CargarRemitoLayout.createSequentialGroup()
+                                .addComponent(jlbl_filtrar_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtxt_filtrar_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPan_CargarRemitoLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPan_CargarRemitoLayout.createSequentialGroup()
+                                        .addComponent(jBtn_nuevoLibro)
+                                        .addGap(64, 64, 64))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPan_CargarRemitoLayout.createSequentialGroup()
+                                        .addComponent(jlbl_cantidad_CargarRemito)
+                                        .addGap(32, 32, 32)
+                                        .addComponent(jtxt_cantidad_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(60, 60, 60))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPan_CargarRemitoLayout.createSequentialGroup()
+                                        .addComponent(jBtn_agregarAlRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(69, 69, 69))))
+                            .addGroup(jPan_CargarRemitoLayout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlbl_libroSeleccionado_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addContainerGap(28, Short.MAX_VALUE))))
+                    .addGroup(jPan_CargarRemitoLayout.createSequentialGroup()
+                        .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlbl_titulo_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 841, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
+        );
+        jPan_CargarRemitoLayout.setVerticalGroup(
+            jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPan_CargarRemitoLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jlbl_titulo_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlbl_filtrar_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxt_filtrar_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPan_CargarRemitoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jBtn_terminar_cargarRemito)
+                            .addComponent(jBtn_cancelar_CargarRemito))
+                        .addGap(43, 43, 43))
+                    .addGroup(jPan_CargarRemitoLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jBtn_nuevoLibro)
+                        .addGap(38, 38, 38)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jlbl_libroSeleccionado_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addGroup(jPan_CargarRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlbl_cantidad_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxt_cantidad_CargarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addComponent(jBtn_agregarAlRemito)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        jPan_general.add(jPan_CargarRemito, "card2");
 
         jMenu_altas.setText("Altas");
 
@@ -288,6 +536,18 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu_consultas.add(jMI_consultaVentas);
 
         jMenuBar.add(jMenu_consultas);
+
+        jMenu_proveedores.setText("Proveedores");
+
+        jMI_CargarRemito.setText("Cargar Remito");
+        jMI_CargarRemito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMI_CargarRemitoActionPerformed(evt);
+            }
+        });
+        jMenu_proveedores.add(jMI_CargarRemito);
+
+        jMenuBar.add(jMenu_proveedores);
 
         jMenu_ventas.setText("Ventas");
 
@@ -370,7 +630,180 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jPan_vacio.setVisible(false);
         jPan_ConsultaLibros.setVisible(true);
         listarLibros();
+        jBtn_filtrarISBN.setSelected(true);
     }//GEN-LAST:event_jMI_ConsultaLibrosActionPerformed
+
+    private void jBtn_filtrarISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_filtrarISBNActionPerformed
+        limpiarselecciones();
+        jBtn_filtrarISBN.setSelected(true);
+        filtoSeleccionado=1;
+    }//GEN-LAST:event_jBtn_filtrarISBNActionPerformed
+
+    private void jbtn_filtrarTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_filtrarTituloActionPerformed
+        limpiarselecciones();
+        jbtn_filtrarTitulo.setSelected(true);
+        filtoSeleccionado=2;
+    }//GEN-LAST:event_jbtn_filtrarTituloActionPerformed
+
+    private void jtxt_filtrarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_filtrarKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c)) {
+            busquedaFiltrada();
+        }
+    }//GEN-LAST:event_jtxt_filtrarKeyTyped
+
+    private void jtxt_filtrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_filtrarKeyPressed
+        if (evt.getKeyCode()== KeyEvent.VK_BACK_SPACE || evt.getKeyCode()==KeyEvent.VK_ENTER) {
+        busquedaFiltrada();
+        }
+    }//GEN-LAST:event_jtxt_filtrarKeyPressed
+
+    private void jTbl_tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTbl_tablaMouseClicked
+        int fila= jTbl_tabla.getSelectedRow();
+        String ISBN = jTbl_tabla.getValueAt(fila, 0).toString();
+        jlbl_seleccionado.setText(ISBN);
+        libroSeleccionado = (Libro) new LibroDAOImpl().leer(ISBN);
+        jlbl_seleccionado.setText(libroSeleccionado.toString());
+    }//GEN-LAST:event_jTbl_tablaMouseClicked
+
+    private void jBtn_modificarPrecioLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_modificarPrecioLibroActionPerformed
+        double nuevoPrecio=0;
+        if (libroSeleccionado!=null) {
+            try {                
+                nuevoPrecio = Double.parseDouble( JOptionPane.showInputDialog(this, "Ingrese Nuevo Precio", "Modificar "+libroSeleccionado.getTitulo() , JOptionPane.PLAIN_MESSAGE,null,null, "0").toString());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,"Error  -  (Nuevo Precio) Dato invalido" ,"ERROR", 0);
+            }finally{
+                if (nuevoPrecio!=0) {
+                    libroSeleccionado.setPrecio(nuevoPrecio);
+                    if (new LibroDAOImpl().cambiarPrecio(libroSeleccionado)) {
+                        JOptionPane.showMessageDialog(this, "Exito al cambiar el precio", null, JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                         JOptionPane.showMessageDialog(this, "Fallo al cambiar el precio", null, JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+
+            
+        }else{
+            JOptionPane.showMessageDialog(this, "Seleccione un Libro");
+        }
+        listarLibros();
+        libroSeleccionado=null;
+        jlbl_seleccionado.setText("");
+    }//GEN-LAST:event_jBtn_modificarPrecioLibroActionPerformed
+
+    private void jMI_CargarRemitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_CargarRemitoActionPerformed
+        actualizar();
+        limpiarNuevoRemito();
+        jPan_vacio.setVisible(false);
+        jPan_CargarRemito.setVisible(true);
+        Controlador.GestionLibreria.busqueda=1;
+        new Busqueda(this, true).setVisible(true);
+        int idEditorial=0;
+        if (Controlador.GestionLibreria.resultadoBusqueda instanceof GrupoEditorial) {
+            GrupoEditorial grupo= (GrupoEditorial) Controlador.GestionLibreria.resultadoBusqueda;
+            idEditorial= grupo.getId();
+        }
+        int [] anchos = new int[] {120, 620 ,100};
+                for (int i = 0; i < anchos.length; i++) {                    
+                    jTable_NuevoRemito.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+                } 
+        listarLibrosParaRemito(idEditorial);
+    }//GEN-LAST:event_jMI_CargarRemitoActionPerformed
+
+    private void jtxt_filtrar_CargarRemitoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_filtrar_CargarRemitoKeyTyped
+       char c = evt.getKeyChar();
+       int idEditorial;
+        if (Character.isLetter(c) || Character.isDigit(c)) {
+            if (Controlador.GestionLibreria.resultadoBusqueda instanceof GrupoEditorial) {
+            GrupoEditorial grupo= (GrupoEditorial) Controlador.GestionLibreria.resultadoBusqueda;
+            idEditorial= grupo.getId();
+            BusquedaFiltrada_NuevoRemito(idEditorial);
+        }
+        }          
+    }//GEN-LAST:event_jtxt_filtrar_CargarRemitoKeyTyped
+
+    private void jtxt_filtrar_CargarRemitoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_filtrar_CargarRemitoKeyPressed
+        int idEditorial;
+        if (evt.getKeyCode()== KeyEvent.VK_BACK_SPACE || evt.getKeyCode()==KeyEvent.VK_ENTER) {
+            if (Controlador.GestionLibreria.resultadoBusqueda instanceof GrupoEditorial) {
+            GrupoEditorial grupo= (GrupoEditorial) Controlador.GestionLibreria.resultadoBusqueda;
+            idEditorial= grupo.getId();
+            BusquedaFiltrada_NuevoRemito(idEditorial);
+        }
+        }
+    }//GEN-LAST:event_jtxt_filtrar_CargarRemitoKeyPressed
+
+    private void jTable_busqueda_CargarRemitoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_busqueda_CargarRemitoMouseClicked
+        int fila = jTable_busqueda_CargarRemito.getSelectedRow();
+        String Seleccionado = jTable_busqueda_CargarRemito.getValueAt(fila, 0).toString();
+        String isbn= Seleccionado.substring(6,19);
+        libroSeleccionado = (Libro) new LibroDAOImpl().leer(isbn);
+        jlbl_libroSeleccionado_CargarRemito.setText(libroSeleccionado.getTitulo());
+    }//GEN-LAST:event_jTable_busqueda_CargarRemitoMouseClicked
+
+    private void jBtn_agregarAlRemitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_agregarAlRemitoActionPerformed
+        if (!jtxt_cantidad_CargarRemito.getText().equals("") && libroSeleccionado!=null) {
+            try {
+                DefaultTableModel tabla = (DefaultTableModel) jTable_NuevoRemito.getModel();
+                tabla.addRow(new String[]{libroSeleccionado.getISBN(), libroSeleccionado.getTitulo(), jtxt_cantidad_CargarRemito.getText()});
+                jTable_NuevoRemito.setModel(tabla);
+                libroSeleccionado = null;
+                jtxt_cantidad_CargarRemito.setText("");
+                jlbl_libroSeleccionado_CargarRemito.setText("");
+            } catch (Exception e) {
+            }
+
+        }else{
+            JOptionPane.showMessageDialog(this, "Seleccione un libro e indique la cantidad", "ERROR", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jBtn_agregarAlRemitoActionPerformed
+
+    private void jBtn_cancelar_CargarRemitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_cancelar_CargarRemitoActionPerformed
+        int aux = JOptionPane.showConfirmDialog(this, "Desea cancelar el actual remito?");
+        if (aux==0) {
+            limpiarNuevoRemito();
+            actualizar();
+        }
+    }//GEN-LAST:event_jBtn_cancelar_CargarRemitoActionPerformed
+
+    private void jBtn_nuevoLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_nuevoLibroActionPerformed
+        new NuevoLibro();
+    }//GEN-LAST:event_jBtn_nuevoLibroActionPerformed
+
+    private void jTable_NuevoRemitoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_NuevoRemitoMouseClicked
+        
+    }//GEN-LAST:event_jTable_NuevoRemitoMouseClicked
+
+    private void jBtn_terminar_cargarRemitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_terminar_cargarRemitoActionPerformed
+        // lista de detallesxremito
+        ArrayList<DetalleRemito> lista = new ArrayList<>();
+        int cantidaddeFilas = jTable_NuevoRemito.getRowCount();
+        for (int i = 0; i < cantidaddeFilas; i++) {
+            String isbn = jTable_NuevoRemito.getValueAt(i, 0).toString();
+            Libro libro = (Libro) new LibroDAOImpl().leer(isbn);
+            int cantidad = Integer.parseInt(jTable_NuevoRemito.getValueAt(i, 2).toString());
+            lista.add(new DetalleRemito(libro, cantidad));
+        }
+        Date fecha = new Date();
+        GrupoEditorial grupo=null ;
+        if (Controlador.GestionLibreria.resultadoBusqueda instanceof GrupoEditorial) {
+            grupo =(GrupoEditorial) Controlador.GestionLibreria.resultadoBusqueda;
+            Controlador.GestionLibreria.resultadoBusqueda=null;
+        }
+        Remito nuevoremito= new Remito(grupo, fecha);
+        if (new RemitoDAOImpl().agregarRemito(nuevoremito, lista)) {
+            limpiarNuevoRemito();
+            Object [] opciones = {"Volver al Menu", "Generar Reporte"};
+            int aux = JOptionPane.showOptionDialog(this, "Remito N° 0000-"+String.format("%08d", nuevoremito.getId())+"  Cargado con Exito", "Reporte generado con exito", JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,opciones , 1);
+            if (aux==0) {
+                actualizar();
+            }else if (aux==1){
+                //reporte
+            }
+        }        
+    }//GEN-LAST:event_jBtn_terminar_cargarRemitoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,11 +841,16 @@ public class VistaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBtn_agregarAlRemito;
+    private javax.swing.JButton jBtn_cancelar_CargarRemito;
+    private javax.swing.JRadioButton jBtn_filtrarISBN;
+    private javax.swing.JButton jBtn_modificarPrecioLibro;
+    private javax.swing.JButton jBtn_nuevoLibro;
+    private javax.swing.JButton jBtn_terminar_cargarRemito;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem jMI_AltaGrupo;
     private javax.swing.JMenuItem jMI_AltaSello;
+    private javax.swing.JMenuItem jMI_CargarRemito;
     private javax.swing.JMenuItem jMI_ConsultaLibros;
     private javax.swing.JMenuItem jMI_Librerias;
     private javax.swing.JMenuItem jMI_altaCliente;
@@ -430,23 +868,40 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu_altas;
     private javax.swing.JMenu jMenu_consultas;
     private javax.swing.JMenu jMenu_masOpciones;
+    private javax.swing.JMenu jMenu_proveedores;
     private javax.swing.JMenu jMenu_ventas;
+    private javax.swing.JPanel jPan_CargarRemito;
     private javax.swing.JPanel jPan_ConsultaLibros;
     private javax.swing.JPanel jPan_Tabla;
     private javax.swing.JPanel jPan_general;
     private javax.swing.JPanel jPan_vacio;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSep_1;
     private javax.swing.JPopupMenu.Separator jSep_2;
     private javax.swing.JPopupMenu.Separator jSep_3;
+    private javax.swing.JTable jTable_NuevoRemito;
+    private javax.swing.JTable jTable_busqueda_CargarRemito;
     private javax.swing.JTable jTbl_tabla;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JRadioButton jbtn_filtrarTitulo;
+    private javax.swing.JLabel jlbl_cantidad_CargarRemito;
+    private javax.swing.JLabel jlbl_filtrar;
+    private javax.swing.JLabel jlbl_filtrar_CargarRemito;
+    private javax.swing.JLabel jlbl_libroSeleccionado_CargarRemito;
+    private javax.swing.JLabel jlbl_seleccionado;
+    private javax.swing.JLabel jlbl_titulo_CargarRemito;
+    private javax.swing.JLabel jlbltitulo;
+    private javax.swing.JFormattedTextField jtxt_cantidad_CargarRemito;
+    private javax.swing.JTextField jtxt_filtrar;
+    private javax.swing.JFormattedTextField jtxt_filtrar_CargarRemito;
     // End of variables declaration//GEN-END:variables
-
+    private static int filtoSeleccionado=1;
+    private static Libro libroSeleccionado=null;
+          
+    
+    
     private void permisossucurales() {
         if (Controlador.GestionLibreria.idUsuario!=1) {
             jMI_Librerias.setVisible(false);
@@ -457,6 +912,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private void actualizar(){
         jPan_vacio.setVisible(true);
         jPan_ConsultaLibros.setVisible(false);
+        jPan_CargarRemito.setVisible(false);
     }
     
     private void listarLibros(){
@@ -488,9 +944,130 @@ public class VistaPrincipal extends javax.swing.JFrame {
                 jTbl_tabla.setPreferredSize(new Dimension(500, lista.size()*16));
                 jTbl_tabla.setModel(tabla);
                 
-                int [] anchos = new int[] {95,215,200,100,150,65};
+                int [] anchos = new int[] {100,210,200,100,150,65};
                 for (int i = 0; i < anchos.length; i++) {                    
                     jTbl_tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
                 } 
+    }
+
+    private void limpiarselecciones() {
+        jBtn_filtrarISBN.setSelected(false);
+        jbtn_filtrarTitulo.setSelected(false);
+        jtxt_filtrar.setText("");
+    }
+
+    private void busquedaFiltrada() {
+        DefaultTableModel tabla = new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{"ISBN", "Titulo","Autor","Genero","Sello Editorial","Precio"}) {
+                    boolean[] canEdit = new boolean[]{false, false,false,false,false,false};
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                };
+                
+                ArrayList<Libro> lista = new LibroDAOImpl().listarFiltrado(jtxt_filtrar.getText(), filtoSeleccionado);
+                for (Libro aux : lista) {
+                    Escritor autor= (Escritor) new EscritorDAOImpl().cargarPorId(aux.getAutor().getId());
+                    Genero genero = (Genero)  new GeneroDAOImpl().cargarPorId(aux.getGenero().getId());
+                    SelloEditorial sello = (SelloEditorial) new SelloEditorialDAOImpl().cargarPorId(aux.getEditorial().getId());
+                    GrupoEditorial grupo = (GrupoEditorial) new GrupoEditorialDAOImpl().cargarPorId(sello.getGrupo().getId());
+                    tabla.addRow(new String []{ aux.getISBN(),
+                                                aux.getTitulo(),
+                                                autor.getNombres()+" "+autor.getApellidos(),
+                                                genero.getNombre(),
+                                                sello.getNombre(),
+                                                //grupo.getNombre(),
+                                                "$ "+String.format("%.2f", aux.getPrecio())});
+                }
+                jTbl_tabla.setPreferredSize(new Dimension(500, lista.size()*16));
+                jTbl_tabla.setModel(tabla);
+                
+                int [] anchos = new int[] {100,210,200,100,150,65};
+                for (int i = 0; i < anchos.length; i++) {                    
+                    jTbl_tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+                } 
+    }
+/**
+ * imprime en la tabla de libros en crear remito, una lista de libros filtrada por al editorial correspondiente
+ * @param idEditorial id del grupo editorial del que se hace el nuevo remito 
+ */
+    private void listarLibrosParaRemito(int idEditorial) {
+        ArrayList<Libro> lista = new LibroDAOImpl().listarFiltradoPorGrupo(idEditorial);
+        DefaultTableModel tabla = new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{"Libros"}) {
+                    boolean[] canEdit = new boolean[]{false};
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                };
+        for(Libro aux :lista){
+            tabla.addRow(new String[] {aux.toString()});
+        }
+        jTable_busqueda_CargarRemito.setPreferredSize(new Dimension(566, lista.size()*16));
+        jTable_busqueda_CargarRemito.setModel(tabla);
+    }
+
+    private void BusquedaFiltrada_NuevoRemito(int idEditorial) {
+        ArrayList<Libro> lista = new LibroDAOImpl().listarFiltradoPorGrupoeISBN(idEditorial, jtxt_filtrar_CargarRemito.getText());
+        DefaultTableModel tabla = new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{"Libros"}) {
+                    boolean[] canEdit = new boolean[]{false};
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                };
+        for(Libro aux :lista){
+            tabla.addRow(new String[] {aux.toString()});
+        }
+        jTable_busqueda_CargarRemito.setPreferredSize(new Dimension(566, lista.size()*16));
+        jTable_busqueda_CargarRemito.setModel(tabla);
+    }
+
+    private void limpiarNuevoRemito() {
+        jTable_NuevoRemito.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ISBN", "Titulo", "Cantidad"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_busqueda_CargarRemito.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Title 1"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jtxt_filtrar_CargarRemito.setText("");
     }
 }

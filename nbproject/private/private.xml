@@ -10,8 +10,10 @@
             <file>file:/C:/Users/Matias/Documents/NetBeansProjects/GestionLibreria/src/Vista/VistaPrincipal.java</file>
             <file>file:/C:/Users/Matias/Documents/NetBeansProjects/GestionLibreria/src/Modelo/Libro.java</file>
             <file>file:/C:/Users/Matias/Documents/NetBeansProjects/GestionLibreria/src/Vista/NuevoSello.java</file>
+            <file>file:/C:/Users/Matias/Documents/NetBeansProjects/GestionLibreria/src/Controlador/GestionLibreria.java</file>
             <file>file:/C:/Users/Matias/Documents/NetBeansProjects/GestionLibreria/src/Controlador/DAO/LibroDAOImpl.java</file>
             <file>file:/C:/Users/Matias/Documents/NetBeansProjects/GestionLibreria/src/Modelo/Mapeo/Libreria.hbm.xml</file>
+            <file>file:/C:/Users/Matias/Documents/NetBeansProjects/GestionLibreria/src/Modelo/ConexionJDBC.java</file>
         </group>
     </open-files>
 </project-private>

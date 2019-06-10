@@ -55,4 +55,24 @@ Contributor(s):
     <query name="listar libros">
         select l from Libro l order by titulo
     </query>
+    
+    <query name="libros filtrado por ISBN">
+        select l from Libro l where ISBN like :aux order by titulo
+    </query>
+    
+    <query name="libros filtrado por Titulo">
+        select l from Libro l where titulo like :aux order by titulo
+    </query>
+    
+    <query name="libros filtrado por Grupo">
+        select l from Libro l where editorial.grupo.id = :id
+        order by titulo
+    </query>
+    
+    <query name="libros filtrado por Grupo y Por ISBN">
+        select l from Libro l where editorial.grupo.id = :id
+        and ISBN like :isbn
+        order by titulo
+    </query>
+    
 </hibernate-mapping>

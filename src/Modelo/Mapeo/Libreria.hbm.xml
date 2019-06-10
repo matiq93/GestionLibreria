@@ -54,4 +54,7 @@ Contributor(s):
     <query name="Listar Todos">
         from Libreria
     </query> 
+    <query name="buscar por id">
+        select l from Libreria l where id = :id
+    </query>
 </hibernate-mapping>

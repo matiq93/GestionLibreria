@@ -53,5 +53,8 @@ Contributor(s):
     <mapping resource="Modelo/Mapeo/SelloEditorial.hbm.xml"/>
     <mapping resource="Modelo/Mapeo/Escritor.hbm.xml"/>
     <mapping resource="Modelo/Mapeo/Libro.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/Remito.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/DetalleRemito.hbm.xml"/>
+    <mapping resource="Modelo/Mapeo/StockXLibreria.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

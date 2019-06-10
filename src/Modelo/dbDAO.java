@@ -6,7 +6,7 @@
 package Modelo;
 
 import java.util.ArrayList;
-
+import org.hibernate.Session;
 /**
  *
  * @author Matias
