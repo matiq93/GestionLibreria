@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import org.jfree.util.PublicCloneable;
 import Controlador.DAO.EscritorDAOImpl;
 import Controlador.DAO.GeneroDAOImpl;
 import Controlador.DAO.GrupoEditorialDAOImpl;
@@ -632,6 +633,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jPan_ConsultaLibros.setVisible(true);
         listarLibros();
         jBtn_filtrarISBN.setSelected(true);
+        new GenerarReportes().reporteLibros();
     }//GEN-LAST:event_jMI_ConsultaLibrosActionPerformed
 
     private void jBtn_filtrarISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_filtrarISBNActionPerformed

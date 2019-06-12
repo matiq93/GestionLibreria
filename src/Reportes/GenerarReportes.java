@@ -5,6 +5,8 @@
  */
 package Reportes;
 
+import org.jfree.chart.*;
+import org.jfree.util.PublicCloneable;
 import Controlador.DAO.GrupoEditorialDAOImpl;
 import Controlador.DAO.LibreriaDAOImpl;
 import Modelo.Conexion;
@@ -82,6 +84,32 @@ public class GenerarReportes {
             }
         }
     }
-
+    public void reporteLibros(){
+         File archivo=null;
+         JasperReport doc=null;
+        try {
+            archivo= new File("C:\\Users\\Matias\\Documents\\NetBeansProjects\\GestionLibreria\\src\\Reportes\\ReporteLibros.jasper");
+        
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        try {
+             doc= (JasperReport)JRLoader.loadObject(archivo);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+         ConexionJDBC c  = new ConexionJDBC();
+            try {
+                JasperPrint j = JasperFillManager.fillReport(doc, null, c.getConexion());
+                JasperViewer jv = new JasperViewer(j, false);
+                jv.setTitle("Reporte");
+                jv.setVisible(true);
+            } catch (JRException e) {
+                System.out.println(e.getMessage());       
+            }finally{
+                c.cerrarConexion();
+            }
+    }
     
 }
