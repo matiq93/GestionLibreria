@@ -18,6 +18,7 @@ import Modelo.GrupoEditorial;
 import Modelo.Libro;
 import Modelo.Remito;
 import Modelo.SelloEditorial;
+import Reportes.GenerarReportes;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
@@ -800,7 +801,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
             if (aux==0) {
                 actualizar();
             }else if (aux==1){
-                //reporte
+                new GenerarReportes().imprimirRemito(nuevoremito);
             }
         }        
     }//GEN-LAST:event_jBtn_terminar_cargarRemitoActionPerformed

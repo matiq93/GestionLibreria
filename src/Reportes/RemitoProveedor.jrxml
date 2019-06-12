@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="6"/>
+	<property name="ireport.y" value="288"/>
+	<parameter name="idRemito" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="direccionLibreria" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cuitLibreria" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreLibreria" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreGrupo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select   gestionlibreria.libro.`ISBN`,  gestionlibreria.libro.titulo ,  gestionlibreria.libro.`precioBase` ,  gestionlibreria.detalleremito.cantidad 
+from  gestionlibreria.detalleremito join  gestionlibreria.libro 
+on  gestionlibreria.detalleremito.libro_id =  gestionlibreria.libro.id 
+where gestionlibreria.detalleremito.`remitoProveedor_nroRemito`  =$P{idRemito}]]>
+	</queryString>
+	<field name="ISBN" class="java.lang.String"/>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="precioBase" class="java.lang.Double"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<variable name="cantidad_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<variable name="cantidad_2" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<variable name="cantidad_3" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="79"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="214" y="0" width="127" height="79"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="227" y="9" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[REMITO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="19" width="27" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="208" y="59" width="138" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["N° 0000-"+String.format( "%08d",$P{idRemito} )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="19" y="12" width="165" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{direccionLibreria}+" - Cordoba"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="32" width="165" height="20"/>
+				<textElement/>
+				<text><![CDATA[3521-430415  - 3521-431433]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="52" width="165" height="20"/>
+				<textElement/>
+				<text><![CDATA[matiasquinones.93@gmail.com]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="384" y="32" width="159" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Fecha y Hora "+$P{fecha}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="52" width="159" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CUIT: "+$P{cuitLibreria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="12" width="159" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nombreLibreria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="20" y="0" width="511" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre Proveedor: "+$P{nombreGrupo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="17" width="195" height="18"/>
+				<textElement/>
+				<text><![CDATA[CUIT: __-_______-_]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="22" width="100" height="1"/>
+			</break>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="23"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="17" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[ISBN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="136" y="0" width="265" height="20"/>
+				<textElement/>
+				<text><![CDATA[TITULO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="497" y="0" width="57" height="20"/>
+				<textElement/>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="0" width="69" height="20"/>
+				<textElement/>
+				<text><![CDATA[PRECIO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="17" y="4" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ISBN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="4" width="262" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{titulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="497" y="4" width="57" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="4" width="67" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{precioBase}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" forecolor="#999999"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="503" y="15" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[+$V{cantidad_3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="398" y="15" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Total de Libros: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="8" width="555" height="1"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="443" y="0" width="43" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="503" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="486" y="0" width="17" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ de ]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

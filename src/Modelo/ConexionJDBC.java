@@ -15,15 +15,28 @@ import java.sql.DriverManager;
 public class ConexionJDBC {
     private Connection conexion;
 
-    private ConexionJDBC() {
+     
+    public ConexionJDBC() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection c=DriverManager.getConnection("jdbc:mysql://localhost/gestionlibreria","root","adeeme");//172.16.143.15
+            conexion=DriverManager.getConnection("jdbc:mysql://localhost/gestionlibreria","root","adeeme");//172.16.143.15
         } catch (Exception e) {
         }
-        
-        
+                
     }
+
+    public Connection getConexion() {
+        
+        return this.conexion;
+    }
+     public void cerrarConexion(){
+         try {
+             this.conexion.close();
+         } catch (Exception e) {
+             System.out.println(e.getMessage());
+         }
+
+     }
     
     
 }
